@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class DancingLinks {
 
@@ -9,19 +9,23 @@ public class DancingLinks {
 		node down;
 		node left;
 		node right;
+		int rowID;
 		columnNode column;
-
+		
+		//when a node is created, initialize all variables to point to itself
 		public node() {
 			up = this;
 			down = this;
 			left = this;
 			right = this;
+			rowID = -1;
 
 		}
 
-		public node(columnNode c) {
+		public node(columnNode c, int r) {
 			this();
 			this.column = c;
+			this.rowID = r;
 		}
 
 		// toroidally doubly links the given node below this node.
@@ -66,12 +70,14 @@ public class DancingLinks {
 	}
 
 	private columnNode head;
-	private ArrayList solutions;
+	private List<node> solutions = new ArrayList<node>();
 
+	//constructor. Creates the sparse matrix with the passed matrix and calls the search method.
 	public DancingLinks(byte[][] matrix) {
 
 		createSparse(matrix);
 		search(0);
+		System.out.println("search complete with " + solFound + " solutions found");
 
 		System.out.println("Complete");
 	}
@@ -99,18 +105,17 @@ public class DancingLinks {
 			node last = null;
 
 			for (int j = 0; j < columns; j++) {
+				//if a 1 appears in the matrix, create a node for it and insert into the structure
 				if (matrix[i][j] == 1) {
 					columnNode c = columnNodes.get(j);
-					node newNode = new node(c);
+					node newNode = new node(c, i);
 
-					if (last == null) {
+					if (last == null) 
 						last = newNode;
-					} else {
 
-						c.up.linkDown(newNode);
-						last = last.linkRight(newNode);
-						c.size++;
-					}
+					c.up.linkDown(newNode);
+					last = last.linkRight(newNode);
+					c.size++;
 				}
 
 			}
@@ -124,10 +129,14 @@ public class DancingLinks {
 
 	// the main searching method. Finds the solutions and adds the rows to the
 	// solutions list
+	
+	private int solFound = 0;
 	private void search(int k) {
-		System.out.println("search entered");
 
 		if (head.right == head) {
+			System.out.println("solution found!");
+			solFound++;
+			printSolution();
 			return;
 		} else {
 
@@ -136,7 +145,7 @@ public class DancingLinks {
 
 			// for every row in column c
 			for (node row = c.down; row != c; row = row.down) {
-
+				
 				solutions.add(row);
 				// for every node in the row
 				for (node i = row.right; i != row; i = i.right) {
@@ -157,25 +166,33 @@ public class DancingLinks {
 			uncover(c);
 
 		}
+
+	}
+	
+	private void printSolution(){
+		
+		for(int i = 0; i<solutions.size(); i++){			
+			node n = solutions.get(i);		
+			System.out.println("row " + (n.rowID+1));	
+		}
+			
 	}
 
 	// covers a given column (i.e. temporarily removes it from the matrix)
 	private void cover(columnNode c) {
-		System.out.println("cover entered");
 
 		c.right.left = c.left;
 		c.left.right = c.right;
+		
 
 		// for every node under c
 		for (node i = c.down; i != c; i = i.down) {
-			System.out.println("loop 1 entered");
 			// for every node to the right
 			for (node j = i.right; j != i; j = j.right) {
 
 				j.down.up = j.up;
 				j.up.down = j.down;
 				j.column.size = j.column.size - 1;
-				System.out.println(i.column.name + " " + j.column.name);
 
 			}
 		}
@@ -184,11 +201,9 @@ public class DancingLinks {
 
 	// uncovers a given column (i.e reinserts it into the matrix)
 	private void uncover(columnNode c) {
-		System.out.println("uncover entered");
 
 		// for every node "above" c
 		for (node i = c.up; i != c; i = i.up) {
-			System.out.println("loop 1 uncover entered");
 			// for every node to the left
 			for (node j = i.left; j != i; j = j.left) {
 
