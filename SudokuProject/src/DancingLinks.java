@@ -1,5 +1,9 @@
 import java.util.*;
 
+//Dancing Links class. This class is responsible for solving of the exact cover problem. It is not limited to sudoku and can accept any exact cover problem
+//represented as a matrix of 0's and 1's. It finds the subset of rows such that there is a 1 in every column. It takes a byte array as input and returns 
+//an ArrayList of int arrays each containing a solution (i.e an array of row numbers)
+
 public class DancingLinks {
 
 	// subclass node to hold the information of each node in the matrix
@@ -70,7 +74,8 @@ public class DancingLinks {
 	}
 
 	private columnNode head;
-	private List<node> solutions = new ArrayList<node>();
+	private List<node> solutionTemp = new ArrayList<node>();
+	private List<int[]> solutions = new ArrayList<int[]>();
 
 	//constructor. Creates the sparse matrix with the passed matrix and calls the search method.
 	public DancingLinks(byte[][] matrix) {
@@ -123,7 +128,7 @@ public class DancingLinks {
 		}
 		
 		head.size = columns;
-		System.out.println("sparse created");
+		System.out.println("matrix created");
 		return head;
 	}
 
@@ -136,7 +141,7 @@ public class DancingLinks {
 		if (head.right == head) {
 			System.out.println("solution found!");
 			solFound++;
-			printSolution();
+			manageSolution(solutionTemp);
 			return;
 		} else {
 
@@ -146,7 +151,7 @@ public class DancingLinks {
 			// for every row in column c
 			for (node row = c.down; row != c; row = row.down) {
 				
-				solutions.add(row);
+				solutionTemp.add(row);
 				// for every node in the row
 				for (node i = row.right; i != row; i = i.right) {
 					cover(i.column);
@@ -154,7 +159,7 @@ public class DancingLinks {
 
 				search(k + 1); // recursive step
 
-				solutions.remove(row);
+				solutionTemp.remove(row);
 				c = row.column;
 				// for every node in the row
 				for (node i = row.left; i != row; i = i.left) {
@@ -169,13 +174,24 @@ public class DancingLinks {
 
 	}
 	
-	private void printSolution(){
+	public ArrayList<int[]> getSolutions(){
 		
-		for(int i = 0; i<solutions.size(); i++){			
-			node n = solutions.get(i);		
-			System.out.println("row " + (n.rowID+1));	
-		}
+		return (ArrayList<int[]>) solutions;
 			
+	}
+	
+	private void manageSolution(List<node> solution){
+		
+		int[] solutionArray = new int[solution.size()];
+
+		
+		for(int i = 0; i < solutionTemp.size(); i++){
+			
+			solutionArray[i] = solution.get(i).rowID;
+				
+		}
+		
+		solutions.add(solutionArray);
 	}
 
 	// covers a given column (i.e. temporarily removes it from the matrix)
