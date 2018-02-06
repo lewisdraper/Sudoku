@@ -6,7 +6,7 @@ import java.util.*;
 
 public class DancingLinks {
 
-	// subclass node to hold the information of each node in the matrix
+	// subclass 'node' to hold the information of each node in the matrix
 	class node {
 
 		node up;
@@ -56,9 +56,7 @@ public class DancingLinks {
 
 	}
 
-	// columnNode subclass that extends node and holds extra information for the
-	// columnNodes
-	// such as size and name.
+	// 'columnNode' subclass that extends node and holds extra information for the columnNodes such as size and name.
 	class columnNode extends node {
 
 		String name;
