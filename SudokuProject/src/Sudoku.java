@@ -18,6 +18,7 @@ public class Sudoku {
 	public ArrayList<int[]> solve(){
 		
 		byte[][] constraintMatrix = createConstraintMatrix();
+		int[][] answer = new int[size][size];
 		for(int i = 0; i<constraintMatrix.length; i++){
 			for(int j = 0; j<constraintMatrix[i].length; j++){
 
@@ -26,10 +27,27 @@ public class Sudoku {
 		DancingLinks dl = new DancingLinks(constraintMatrix);
 		ArrayList<int[]> solutions = dl.getSolutions();
 		
+		int[] answer1 = solutions.get(0);
 		
-		
-		
+		for(int i = 0; i<answer1.length; i++){
 			
+			int row = (answer1[i]/(size*size));
+			int col = (((answer1[i]/size)%size));
+			int num = (answer1[i]%(size)+1);
+			
+			answer[row][col] = num;
+			
+		}
+		
+		System.out.print("\n\nSolution:");
+		for(int j = 0; j<answer.length; j++){
+			System.out.println();
+			for(int k = 0; k<answer[j].length; k++){
+				System.out.print(answer[j][k] + " ");
+			}
+		}
+		
+				
 		return solutions;
 		
 	}

@@ -80,9 +80,7 @@ public class DancingLinks {
 
 		createSparse(matrix);
 		search(0);
-		System.out.println("search complete with " + solFound + " solutions found");
 
-		System.out.println("Complete");
 	}
 
 	private columnNode createSparse(byte[][] matrix) {
@@ -126,7 +124,6 @@ public class DancingLinks {
 		}
 		
 		head.size = columns;
-		System.out.println("matrix created");
 		return head;
 	}
 
@@ -137,7 +134,6 @@ public class DancingLinks {
 	private void search(int k) {
 
 		if (head.right == head) {
-			System.out.println("solution found!");
 			solFound++;
 			manageSolution(solutionTemp);
 			return;
