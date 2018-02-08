@@ -45,22 +45,14 @@ public class main {
 	public static void main(String[] args) {
 		
 		System.out.print("Puzzle to solve:");
-		
-		for(int i = 0; i<puzzle4.length; i++){
-			System.out.println();
-			for(int j = 0; j<puzzle4[i].length; j++){
-				if(puzzle4[i][j]==0){
-					System.out.print("- ");
-				}else{
-					System.out.print(puzzle4[i][j] + " ");
-				}
-			}
-		}
-		
-		
+		Sudoku.printSudoku(puzzle4);
+				
 		Sudoku sudoku = new Sudoku(puzzle4);
-		sudoku.solve();
+		int[][] solution = sudoku.solve();
 		
+		System.out.print("\n\nSolution: ");
+		Sudoku.printSudoku(solution);
+			
 	}
 
 }
