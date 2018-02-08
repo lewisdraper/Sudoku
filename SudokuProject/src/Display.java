@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class Display {
 
-	private JFrame window;
+	private JFrame frame;
 	private int[][] grid;
 	
 
@@ -14,7 +14,12 @@ public class Display {
 	
 	private void createDisplay(){
 		
-		
+		frame = new JFrame("SuDoKu!");
+		frame.setSize(1280, 720);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 		
 	}
 	

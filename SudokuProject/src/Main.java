@@ -1,5 +1,5 @@
 
-public class Launcher {
+public class Main {
 	
 	/*private static int[][] puzzle1 = {{8, 0, 0 ,9, 3, 0, 0, 0, 2},
 									 {0, 0, 9, 0, 0, 0, 0, 4, 0},
@@ -33,7 +33,8 @@ public class Launcher {
 		
 		System.out.print("\n\nSolution: ");
 		Sudoku.printSudoku(solution);
-			
+		
+		Display display = new Display(solution);
 	}
 
 }
