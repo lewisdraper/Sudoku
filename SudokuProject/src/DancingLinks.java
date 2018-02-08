@@ -16,7 +16,7 @@ public class DancingLinks {
 		int rowID;
 		columnNode column;
 		
-		//when a node is created, initialize all variables to point to itself
+		//when a node is created, initialise all variables to point to itself
 		public node() {
 			up = this;
 			down = this;
@@ -127,14 +127,9 @@ public class DancingLinks {
 		return head;
 	}
 
-	// the main searching method. Finds the solutions and adds the rows to the
-	// solutions list
-	
-	private int solFound = 0;
 	private void search(int k) {
 
 		if (head.right == head) {
-			solFound++;
 			manageSolution(solutionTemp);
 			return;
 		} else {
