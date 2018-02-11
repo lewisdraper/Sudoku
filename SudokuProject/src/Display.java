@@ -14,6 +14,8 @@ public class Display {
 	private JPanel sudokuPanel;
 	private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 24);
 
+	
+	
 	public Display(int[][] grid) {
 		this.grid = grid;
 		createDisplay();
@@ -43,15 +45,13 @@ public class Display {
 
 	private void drawGrid(){
 		sudokuPanel= new JPanel(new GridLayout(3, 3, 0, 0));
-		sudokuPanel.setBackground(Color.black);
-
 		sudokuPanel.setPreferredSize(new Dimension(720, 720));
-		sudokuPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 0));
+		sudokuPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 	
 		for(int i = 0; i < 9; i += 3){
             for(int j = 0; j < 9; j+= 3){
             	JPanel smallPanel = new JPanel(new GridLayout(3, 3, 1, 1));
-            	smallPanel.setBackground(Color.black);
+            	smallPanel.setBackground(Color.gray);
             	JLabel[][] boxNumbers = new JLabel[3][3];
                 for(int di = 0; di < 3; di++){
                     for(int dj = 0; dj < 3; dj++){
