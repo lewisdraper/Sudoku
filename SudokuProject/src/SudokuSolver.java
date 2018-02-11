@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Sudoku {
+public class SudokuSolver {
 
 	private int[][] puzzle;
 	private int size;
 	private int side;
 
-	public Sudoku(int[][] puzzle) {
+	public SudokuSolver(int[][] puzzle) {
 
 		this.puzzle = puzzle;
 		this.size = puzzle.length;

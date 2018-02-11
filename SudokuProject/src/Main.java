@@ -23,18 +23,19 @@ public class Main {
 			 						  {0, 9, 0, 0, 0, 0, 4, 0, 0}
 									 };
 	
+
 	public static void main(String[] args) {
 		
 		System.out.print("Puzzle to solve:");
-		Sudoku.printSudoku(puzzle2);
-				
-		Sudoku sudoku = new Sudoku(puzzle2);
+		SudokuSolver.printSudoku(puzzle2);
+		SudokuSolver sudoku = new SudokuSolver(puzzle2);
 		int[][] solution = sudoku.solve();
 		
 		System.out.print("\n\nSolution: ");
-		Sudoku.printSudoku(solution);
+		SudokuSolver.printSudoku(solution);
 		
-		Display display = new Display(solution);
+		
+		Display display = new Display(puzzle2);
 	}
 
 }
