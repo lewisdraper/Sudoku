@@ -26,7 +26,8 @@ public class SudokuSolver {
 		ArrayList<int[]> solutions = dl.getSolutions();
 
 		solutionGrid = solutionToGrid(solutions.get(0));
-
+		
+		System.out.println("solution found");
 		return solutionGrid;
 
 	}

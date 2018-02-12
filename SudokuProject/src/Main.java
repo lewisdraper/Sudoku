@@ -26,13 +26,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		System.out.print("Puzzle to solve:");
-		SudokuSolver.printSudoku(puzzle2);
+		//System.out.print("Puzzle to solve:");
+		//SudokuSolver.printSudoku(puzzle2);
 		SudokuSolver sudoku = new SudokuSolver(puzzle2);
-		int[][] solution = sudoku.solve();
+		//int[][] solution = sudoku.solve();
 		
-		System.out.print("\n\nSolution: ");
-		SudokuSolver.printSudoku(solution);
+		//System.out.print("\n\nSolution: ");
+		//SudokuSolver.printSudoku(solution);
 		
 		
 		Display display = new Display(puzzle2);
