@@ -128,9 +128,11 @@ public class DancingLinks {
 	}
 
 	private void search(int k) {
+		int solFound = 0;
 
 		if (head.right == head) {
 			manageSolution(solutionTemp);
+			solFound++;
 			return;
 		} else {
 

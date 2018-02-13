@@ -28,7 +28,7 @@ public class Main {
 		
 		//System.out.print("Puzzle to solve:");
 		//SudokuSolver.printSudoku(puzzle2);
-		SudokuSolver sudoku = new SudokuSolver(puzzle2);
+		//SudokuSolver sudoku = new SudokuSolver(puzzle2);
 		//int[][] solution = sudoku.solve();
 		
 		//System.out.print("\n\nSolution: ");

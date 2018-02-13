@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SudokuSolver {
+public class SudokuSolver implements Runnable{
 
 	private int[][] puzzle;
 	private int size;
@@ -24,12 +24,13 @@ public class SudokuSolver {
 
 		DancingLinks dl = new DancingLinks(constraintMatrix);
 		ArrayList<int[]> solutions = dl.getSolutions();
-
+		
+		
 		solutionGrid = solutionToGrid(solutions.get(0));
 		
 		System.out.println("solution found");
 		return solutionGrid;
-
+		
 	}
 
 	//this method maps the solution from the dancing links object to an actual sudoku grid
@@ -144,5 +145,10 @@ public class SudokuSolver {
 				}
 			}
 		}
+	}
+
+	public void run() {
+		
+		
 	}
 }

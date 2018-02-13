@@ -9,15 +9,24 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class Display implements ActionListener {
+public class Display implements ActionListener{
 
 	private JFrame frame;
 	private int[][] grid;
-	private int[][] DEFAULT_GRID;
+	private final int[][] DEFAULT_GRID = {{0, 0, 0 ,0, 0, 0, 0, 0, 0},
+										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
+										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
+										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
+										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
+										  {0, 0 ,0 ,0, 0, 0, 0, 0, 0},
+										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
+										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
+										  {0, 0, 0, 0, 0, 0, 0, 0, 0}
+										 };
 	private JPanel sudokuPanel;
-	private Container c;
 	private JButton solve;
 	private JButton generate;
+	private JButton reset;
 	private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 24);
 
 	public Display(int[][] grid) {
@@ -34,21 +43,25 @@ public class Display implements ActionListener {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setLayout(new GridLayout());
-
 		frame.setLayout(new BorderLayout());
 		sudokuPanel = new JPanel(new GridLayout(3, 3, 0, 0));
-		sudokuPanel.setPreferredSize(new Dimension(720, 720));
-		sudokuPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+
 		drawGrid();
 
 		JPanel sidePanel = new JPanel();
+		
 		solve = new JButton("Solve");
-		SudokuSolver solver = new SudokuSolver(grid);
 		solve.addActionListener(this);
 		sidePanel.add(solve);
+		
 		generate = new JButton("Generate");
+		generate.addActionListener(this);
 		sidePanel.add(generate);
-
+		
+		reset = new JButton("Reset");
+		reset.addActionListener(this);
+		sidePanel.add(reset);
+		
 		frame.add(sidePanel, BorderLayout.CENTER);
 		frame.add(sudokuPanel, BorderLayout.WEST);
 		frame.pack();
@@ -56,7 +69,9 @@ public class Display implements ActionListener {
 	}
 
 	private void drawGrid() {
-
+		
+		sudokuPanel.setPreferredSize(new Dimension(720, 720));
+		sudokuPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
 		for (int i = 0; i < 9; i += 3) {
 			for (int j = 0; j < 9; j += 3) {
@@ -87,16 +102,32 @@ public class Display implements ActionListener {
 		}
 
 	}
+	
 
 	public void actionPerformed(ActionEvent e) {
 		SudokuSolver solver = new SudokuSolver(grid);
-		if (e.getSource() == solve) {			
-			sudokuPanel.removeAll();
-			grid = solver.solve();
-			drawGrid();
-			sudokuPanel.revalidate();
-			sudokuPanel.repaint();
-		}
+		SudokuGenerator gen = new SudokuGenerator();
+		
+			if (e.getSource() == solve && grid != DEFAULT_GRID) {			
+				sudokuPanel.removeAll();
+				grid = solver.solve();
+				drawGrid();
+				sudokuPanel.revalidate();
+				
+			}else if(e.getSource() == reset){
+				sudokuPanel.removeAll();
+				grid = DEFAULT_GRID;
+				sudokuPanel.removeAll();
+				drawGrid();
+				sudokuPanel.revalidate();
+				
+			}else if(e.getSource()==generate){
+				sudokuPanel.removeAll();
+				grid = gen.generate();
+				drawGrid();
+				sudokuPanel.revalidate();
+			}
+		
 
 	}
 }
