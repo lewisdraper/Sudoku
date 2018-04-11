@@ -105,7 +105,7 @@ public class Display implements ActionListener{
 	
 
 	public void actionPerformed(ActionEvent e) {
-		SudokuSolver solver = new SudokuSolver(grid);
+		SudokuSolver solver = new SudokuSolver(grid, 0);
 		SudokuGenerator gen = new SudokuGenerator();
 		
 			if (e.getSource() == solve && grid != DEFAULT_GRID) {			

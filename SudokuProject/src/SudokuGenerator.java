@@ -12,7 +12,7 @@ public class SudokuGenerator {
 			  		 {0, 0, 0, 0, 0, 0, 0, 0, 0}
 					}; 
 	int difficulty;
-	int clues = 30;
+	int clues = 20;
 	
 	public SudokuGenerator(){
 		
@@ -25,16 +25,17 @@ public class SudokuGenerator {
 		
 		for(int i = 0; i < clues; i++){
 			
-			int num = randomNum();
+			int num = 0;
 			int row = randomNum() - 1;
 			int col = randomNum() - 1;
+			
+			while(grid[row][col]==0){
+				num = randomNum();
 
-			
-			
-			if(isValid(num, row, col)){
-				grid[row][col] = num;
-			} 
-			
+				if(isValid(num, row, col)){
+					grid[row][col] = num;
+				} 
+			}
 			
 		}
 		
@@ -46,16 +47,14 @@ public class SudokuGenerator {
 	private boolean isValid(int num, int row, int col){
 		
 		
-		//checks if there is no occurence of the number in the row
-		for(int i = 0; i<grid.length; i++){
-			//System.out.println(num + " " + row);
-			
+		//checks if there is no occurrence of the number in the row
+		for(int i = 0; i<grid.length; i++){			
 			if(num == grid[row][i]){
 				return false;
 			}
 		}
 		
-		//checks if there is no occurence of the number in the column
+		//checks if there is no occurrence of the number in the column
 		for(int i = 0; i<grid.length; i++){
 			
 			if(num == grid[i][col]){
@@ -63,7 +62,7 @@ public class SudokuGenerator {
 			}
 		}
 		
-		//checks if there is no occurence of the number in the 3x3 box
+		//checks if there is no occurrence of the number in the 3x3 box
         int x1 = 3 * (row / 3);
         int y1 = 3 * (col / 3);
         int x2 = x1 + 2;
@@ -79,7 +78,7 @@ public class SudokuGenerator {
 		return true;
 	}
 	
-	//returns a random number between 1 and 9
+	//returns a random number from 1 and 9
 	private static int randomNum(){
 		return (int) Math.ceil(Math.random() * 9);
 	}

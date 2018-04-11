@@ -1,17 +1,19 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SudokuSolver implements Runnable{
+public class SudokuSolver{
 
 	private int[][] puzzle;
 	private int size;
 	private int side;
+	private int mode = 0;
 
-	public SudokuSolver(int[][] puzzle) {
+	public SudokuSolver(int[][] puzzle, int mode) {
 
 		this.puzzle = puzzle;
 		this.size = puzzle.length;
 		this.side = (int) Math.sqrt(size);
+		this.mode = mode;
 
 	}
 
@@ -22,7 +24,7 @@ public class SudokuSolver implements Runnable{
 		byte[][] constraintMatrix = createConstraintMatrix();
 		int[][] solutionGrid = new int[size][size];
 
-		DancingLinks dl = new DancingLinks(constraintMatrix);
+		DancingLinks dl = new DancingLinks(constraintMatrix, mode);
 		ArrayList<int[]> solutions = dl.getSolutions();
 		
 		

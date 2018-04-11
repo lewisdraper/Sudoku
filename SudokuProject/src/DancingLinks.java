@@ -1,8 +1,13 @@
+/**
+ * Author: Lewis Draper
+ * DancingLinks Class
+ * This class is responsible for the solving of an exact cover problem. It is not limited to sudoku and can accept any exact cover problem
+ * represented as a matrix of 0's and 1's. It finds the subset of rows such that there is a 1 in every column. It takes a byte array as input and returns 
+ * an ArrayList of int arrays each containing a solution (i.e an array of row numbers)
+ */
+
 import java.util.*;
 
-//Dancing Links class. This class is responsible for solving of the exact cover problem. It is not limited to sudoku and can accept any exact cover problem
-//represented as a matrix of 0's and 1's. It finds the subset of rows such that there is a 1 in every column. It takes a byte array as input and returns 
-//an ArrayList of int arrays each containing a solution (i.e an array of row numbers)
 
 public class DancingLinks {
 
@@ -31,6 +36,7 @@ public class DancingLinks {
 			this.column = c;
 			this.rowID = r;
 		}
+
 
 		// toroidally doubly links the given node below this node.
 		public node linkDown(node n) {
@@ -68,20 +74,37 @@ public class DancingLinks {
 			size = 0;
 			column = this;
 		}
+		
+		//returns a random node linked vertically with this node
+		public node downRandom(){
+			
+			node newNode = this;
+			int rand = (int) Math.ceil(Math.random()*size);
+			for(int i = 0; i<=rand; i++){
+				newNode = newNode.down;
+			}
+			
+			return newNode;
+			
+		}
 
 	}
 
 	private columnNode head;
 	private List<node> solutionTemp = new ArrayList<node>();
 	private List<int[]> solutions = new ArrayList<int[]>();
+	private int mode = 0;
 
 	//constructor. Creates the sparse matrix with the passed matrix and calls the search method.
-	public DancingLinks(byte[][] matrix) {
+	public DancingLinks(byte[][] matrix, int mode) {
 
+		this.mode = mode;
 		createSparse(matrix);
-		search(0);
+		search2(0);
+		
 
 	}
+	
 
 	private columnNode createSparse(byte[][] matrix) {
 
@@ -127,13 +150,15 @@ public class DancingLinks {
 		return head;
 	}
 
-	private void search(int k) {
-		int solFound = 0;
 
+	private void search(int k) {
+		
 		if (head.right == head) {
 			manageSolution(solutionTemp);
 			solFound++;
+			
 			return;
+			
 		} else {
 
 			columnNode c = chooseColumn();
@@ -149,7 +174,7 @@ public class DancingLinks {
 				}
 
 				search(k + 1); // recursive step
-
+			
 				solutionTemp.remove(row);
 				c = row.column;
 				// for every node in the row
@@ -162,7 +187,50 @@ public class DancingLinks {
 			uncover(c);
 
 		}
+		
+	}
+	
+	int solFound = 0;
+    private void search2(int k) {
+		
+		if (head.right == head) {
+			manageSolution(solutionTemp);
+			solFound++;
+			
+			return;
+			
+		} else {
+			if(mode==1&&solFound==1){
+				return;
+			}
+			columnNode c = chooseColumn();
+			cover(c);
 
+			// for every row in column c
+			for (int i = 0; i<c.size; i++) {
+				
+				node row = c.downRandom();
+				solutionTemp.add(row);
+				// for every node in the row
+				for (node j = row.right; j != row; j = j.right) {
+					cover(j.column);
+				}
+
+				search2(k + 1); // recursive step
+			
+				solutionTemp.remove(row);
+				c = row.column;
+				// for every node in the row
+				for (node l = row.left; l != row; l = l.left) {
+					uncover(l.column);
+				}
+
+			}
+
+			uncover(c);
+
+		}
+		
 	}
 	
 	public ArrayList<int[]> getSolutions(){
@@ -227,7 +295,7 @@ public class DancingLinks {
 
 	}
 
-	// heuristic for choosing column with smallest size. greatly reduces search time
+	// heuristic for choosing column with smallest size. greatly reduces branching factor of the recursive algorithm
 	private columnNode chooseColumn() {
 		
 		int min = Integer.MAX_VALUE;
