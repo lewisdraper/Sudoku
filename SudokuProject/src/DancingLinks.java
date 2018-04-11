@@ -165,6 +165,7 @@ public class DancingLinks {
 			cover(c);
 
 			// for every row in column c
+
 			for (node row = c.down; row != c; row = row.down) {
 				
 				solutionTemp.add(row);
@@ -203,13 +204,20 @@ public class DancingLinks {
 			if(mode==1&&solFound==1){
 				return;
 			}
+			
 			columnNode c = chooseColumn();
 			cover(c);
 
-			// for every row in column c
+			
+			int[] rowOrder = randomOrder(c.size);
+			// for every row in column c in a random order
 			for (int i = 0; i<c.size; i++) {
 				
-				node row = c.downRandom();
+				int pos = rowOrder[i];
+				node row = c.down;
+				for(int j = 0; j<pos; j++){
+					row = row.down;
+				}
 				solutionTemp.add(row);
 				// for every node in the row
 				for (node j = row.right; j != row; j = j.right) {
@@ -232,6 +240,27 @@ public class DancingLinks {
 		}
 		
 	}
+    
+    public int[] randomOrder(int size){
+    	
+    	int[] order = new int[size];
+    	
+    	for(int i = 0; i<size; i++){
+    		order[i] = i;
+    	}
+    	
+		for(int i = 0; i<order.length; i++){
+			
+			int rand = (int) Math.ceil(Math.random() * size);
+			int pos = order[i];
+			
+			order[i] = order[rand-1];
+			order[rand-1] = pos ;
+			
+		}
+    	
+    	return order;
+    }
 	
 	public ArrayList<int[]> getSolutions(){
 		
