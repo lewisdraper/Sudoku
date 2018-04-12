@@ -6,6 +6,8 @@ public class SudokuSolver{
 	private int[][] puzzle;
 	private int size;
 	private int side;
+	
+	//mode determines how the solver runs. Mode 0 gets all solutions, mode 1 gets one solution and mode 2 gets 2 solutions, used for checking uniquness of a puzzle
 	private int mode = 0;
 
 	public SudokuSolver(int[][] puzzle, int mode) {
@@ -140,6 +142,7 @@ public class SudokuSolver{
 		return (r - 1) * size * size + (c - 1) * size + (n - 1);
 	}
 
+	//helper method for printing a puzzle to the console
 	public static void printSudoku(int[][] grid) {
 
 		for (int i = 0; i < grid.length; i++) {
