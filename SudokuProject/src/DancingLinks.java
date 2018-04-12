@@ -75,18 +75,7 @@ public class DancingLinks {
 			column = this;
 		}
 		
-		//returns a random node linked vertically with this node
-		public node downRandom(){
-			
-			node newNode = this;
-			int rand = (int) Math.ceil(Math.random()*size);
-			for(int i = 0; i<=rand; i++){
-				newNode = newNode.down;
-			}
-			
-			return newNode;
-			
-		}
+
 
 	}
 
@@ -100,10 +89,24 @@ public class DancingLinks {
 
 		this.mode = mode;
 		createSparse(matrix);
-		search2(0);
-		
 
 	}
+	
+	public void solve(){
+		search2(0);
+	}
+	
+	public boolean hasMultipleSolutions(){
+
+		search(0);
+		if(solutions.size()==2){
+			return true;
+		}else{
+			return false;
+		}	
+
+	}
+
 	
 
 	private columnNode createSparse(byte[][] matrix) {
@@ -150,7 +153,7 @@ public class DancingLinks {
 		return head;
 	}
 
-
+	int solFound = 0;
 	private void search(int k) {
 		
 		if (head.right == head) {
@@ -160,6 +163,10 @@ public class DancingLinks {
 			return;
 			
 		} else {
+			
+			if(mode==2&&solFound==2){
+				return;
+			}
 
 			columnNode c = chooseColumn();
 			cover(c);
@@ -191,17 +198,17 @@ public class DancingLinks {
 		
 	}
 	
-	int solFound = 0;
+	int solFound2 = 0;
     private void search2(int k) {
 		
 		if (head.right == head) {
 			manageSolution(solutionTemp);
-			solFound++;
+			solFound2++;
 			
 			return;
 			
 		} else {
-			if(mode==1&&solFound==1){
+			if(mode==1&&solFound2==1){
 				return;
 			}
 			
@@ -241,6 +248,7 @@ public class DancingLinks {
 		
 	}
     
+    //generates an array of integers of a given size with elements in a random order
     public int[] randomOrder(int size){
     	
     	int[] order = new int[size];

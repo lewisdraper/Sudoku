@@ -25,12 +25,12 @@ public class SudokuSolver{
 		int[][] solutionGrid = new int[size][size];
 
 		DancingLinks dl = new DancingLinks(constraintMatrix, mode);
+		dl.solve();
 		ArrayList<int[]> solutions = dl.getSolutions();
 		
 		
 		solutionGrid = solutionToGrid(solutions.get(0));
 		
-		System.out.println("solution found");
 		return solutionGrid;
 		
 	}
@@ -49,6 +49,19 @@ public class SudokuSolver{
 		}
 
 		return solutionGrid;
+	}
+	
+	public boolean hasMultipleSolutions(){
+		byte[][] constraintMatrix = createConstraintMatrix();
+
+		DancingLinks dl = new DancingLinks(constraintMatrix, 2);
+		
+		if (dl.hasMultipleSolutions()){
+			return true;
+		}else{
+			return false;
+		}
+		
 	}
 
 	//this method created the constraint matrix for our puzzle that will be passed to the dancing links class
@@ -149,8 +162,4 @@ public class SudokuSolver{
 		}
 	}
 
-	public void run() {
-		
-		
-	}
 }
