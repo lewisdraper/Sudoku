@@ -144,7 +144,9 @@ public class SudokuSolver{
 
 	//helper method for printing a puzzle to the console
 	public static void printSudoku(int[][] grid) {
-
+		
+		System.out.println();
+		
 		for (int i = 0; i < grid.length; i++) {
 
 			System.out.println();

@@ -12,21 +12,14 @@ public class Display implements ActionListener{
 
 	private JFrame frame;
 	private int[][] grid;
-	private final int[][] DEFAULT_GRID = {{0, 0, 0 ,0, 0, 0, 0, 0, 0},
-										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
-										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
-										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
-										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
-										  {0, 0 ,0 ,0, 0, 0, 0, 0, 0},
-										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
-										  {0, 0, 0, 0, 0, 0, 0, 0, 0},
-										  {0, 0, 0, 0, 0, 0, 0, 0, 0}
-										 };
+	private final int[][] DEFAULT_GRID = new int[9][9];
 	private JPanel sudokuPanel;
 	private JButton solve;
 	private JButton generate;
 	private JButton reset;
-	private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 24);
+	private JComboBox difficultyList;
+	private int difficulty = 35;
+	private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 55);
 
 	public Display(int[][] grid) {
 		this.grid = grid;
@@ -36,7 +29,7 @@ public class Display implements ActionListener{
 	private void createDisplay() {
 
 		frame = new JFrame("SuDoKu!");
-		frame.setSize(1000, 720);
+		frame.setSize(2000, 1440);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
@@ -49,15 +42,50 @@ public class Display implements ActionListener{
 
 		JPanel sidePanel = new JPanel();
 		
+		sidePanel.setLayout(new GridLayout(3, 1, 100, 100));
+		Font buttonFont = new Font(Font.DIALOG, Font.PLAIN, 55);
+		sidePanel.setPreferredSize(new Dimension(600, 1440));
+		
+		//JPanel solvePanel = new JPanel();
 		solve = new JButton("Solve");
+		solve.setFont(buttonFont);
 		solve.addActionListener(this);
 		sidePanel.add(solve);
 		
+		JPanel genPanel = new JPanel();
+		genPanel.setLayout(new GridLayout(3, 1, 0, 0));
+		String[] difficulties = new String[]{"35 (Easy)", "34 (Easy)", "33 (Easy)", "32 (Easy)", 
+											 "31 (Easy)", "30 (Medium", "29 (Medium)", "28 (Medium)",
+											 "27 (Medium)", "26 (Medium)", "25 (Hard)", "24 (Hard)", 
+											 "23 (Hard)", "22 (Hard)"};
+		
+		sidePanel.add(genPanel);
 		generate = new JButton("Generate");
+		generate.setFont(buttonFont);
 		generate.addActionListener(this);
-		sidePanel.add(generate);
+
+		JComboBox difficultyList = new JComboBox(difficulties);
+		difficultyList.addActionListener(
+				new ActionListener(){
+                    public void actionPerformed(ActionEvent e){
+                        JComboBox combo = (JComboBox)e.getSource();
+                        String currentQuantity = (String)combo.getSelectedItem();
+                        difficulty = Integer.parseInt(currentQuantity.substring(0, 2));
+                    }
+				}
+				
+				
+		);
+		difficultyList.setFont(buttonFont);
+
+		JLabel numGivens = new JLabel("Number of Clues: ");
+		numGivens.setFont(buttonFont);
+		genPanel.add(numGivens);
+		genPanel.add(difficultyList);
+		genPanel.add(generate);
 		
 		reset = new JButton("Reset");
+		reset.setFont(buttonFont);
 		reset.addActionListener(this);
 		sidePanel.add(reset);
 		
@@ -69,7 +97,7 @@ public class Display implements ActionListener{
 
 	private void drawGrid() {
 		
-		sudokuPanel.setPreferredSize(new Dimension(720, 720));
+		sudokuPanel.setPreferredSize(new Dimension(1440, 1440));
 		sudokuPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
 		for (int i = 0; i < 9; i += 3) {
@@ -107,9 +135,14 @@ public class Display implements ActionListener{
 		SudokuSolver solver = new SudokuSolver(grid, 0);
 		SudokuGenerator2 gen = new SudokuGenerator2();
 		
+			
+		
 			if (e.getSource() == solve && grid != DEFAULT_GRID) {			
 				sudokuPanel.removeAll();
+				long start = System.currentTimeMillis();
 				grid = solver.solve();
+				long end = System.currentTimeMillis();
+				System.out.println(end-start + "ms");
 				drawGrid();
 				sudokuPanel.revalidate();
 				
@@ -122,7 +155,7 @@ public class Display implements ActionListener{
 				
 			}else if(e.getSource()==generate){
 				sudokuPanel.removeAll();
-				grid = gen.generate();
+				grid = gen.generate(difficulty);
 				drawGrid();
 				sudokuPanel.revalidate();
 			}

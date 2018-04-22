@@ -35,11 +35,11 @@ public class Main {
 		
 		//System.out.print("\n\nSolution: ");
 		//SudokuSolver.printSudoku(solution);
-		//Display display = new Display(puzzle2);
+		Display display = new Display(puzzle2);
 
-		SudokuGenerator2 sudgen = new SudokuGenerator2();
+		//SudokuGenerator2 sudgen = new SudokuGenerator2();
 		
-		sudgen.generate();
+		//sudgen.generate();
 		
 /*		int[][] grid = sudgen.generate();
 		SudokuSolver.printSudoku(grid);

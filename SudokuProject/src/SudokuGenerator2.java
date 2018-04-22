@@ -4,24 +4,28 @@ public class SudokuGenerator2 {
 	//private int[][] grid = new int[9][9];
 	private int difficulty;
 	
-	public int[][] generate(){
+	public int[][] generate(int difficulty){
 		
+		this.difficulty=difficulty;
 		int[][] grid = new int[9][9];
 		
-		int loops = 0;
-		while(countGivens(grid)!=25){
-			
-			grid = generateFilled();
-			grid = removeNumbers(grid);
-			
-			
-			loops++;
-		}
 		//grid = generateFilled();
-		//grid = removeNumbers(grid);
+		if(difficulty<=27){
+			boolean match = false;
+			while(!match){
+				grid = generateFilled();
+				grid = removeNumbers(grid);
+				if(countGivens(grid)==difficulty){
+					match = true;
+				}
+			}
+			
+		}else{
+			grid = generateFilled();
+			removeNumbers2(grid);
+		}
 		
-		System.out.println(loops);
-		SudokuSolver.printSudoku(grid);
+		//System.out.println(countGivens(grid));
 		return grid;
 	}
 	
@@ -41,31 +45,67 @@ public class SudokuGenerator2 {
 	//removes numbers from grid untill puzzle has multiple solutions
 	private int[][] removeNumbers(int[][] grid){
 		
+
+			int[][] tried = new int[9][9];
+		
+			SudokuSolver ss = new SudokuSolver(grid, 2);
+		
+			int randX = (int) Math.ceil(Math.random()*9)-1;
+			int randY = (int) Math.ceil(Math.random()*9)-1;
+		
+			for(int i = 0; i<81; i++){
+				while(tried[randX][randY]==1){
+					randX = (int) Math.ceil(Math.random()*9)-1;
+					randY = (int) Math.ceil(Math.random()*9)-1;
+				}
+				tried[randX][randY]=1;
+				int temp = grid[randX][randY];
+				grid[randX][randY]=0;
+				if(ss.hasMultipleSolutions()){
+					grid[randX][randY] = temp;
+				}
+			
+			}
+
+		
+		return grid;
+		
+		
+	}
+	
+	private int[][] removeNumbers2(int[][] grid){
+		
+		int toRemove = 81-difficulty;
+
 		int[][] tried = new int[9][9];
-		
+	
 		SudokuSolver ss = new SudokuSolver(grid, 2);
-		
+	
 		int randX = (int) Math.ceil(Math.random()*9)-1;
 		int randY = (int) Math.ceil(Math.random()*9)-1;
-		
-		for(int i = 0; i<81; i++){
+	
+		for(int i = 0; i<toRemove; i++){
 			while(tried[randX][randY]==1){
 				randX = (int) Math.ceil(Math.random()*9)-1;
 				randY = (int) Math.ceil(Math.random()*9)-1;
 			}
 			tried[randX][randY]=1;
-			int temp = grid[randX][randY];
 			grid[randX][randY]=0;
-			if(ss.hasMultipleSolutions()){
-				grid[randX][randY] = temp;
-			}
-			
+		
 		}
+
+	
+	return grid;
+	
+	
+}
+	
+	private int[][] removeNumbersSymmetric(int[][] grid){
+		
+		
 		
 		
 		return grid;
-		
-		
 	}
 	//creates an array of digits 1 to 9 in a random order. used for populating first row of grid
 	private int[] randomArray(){
